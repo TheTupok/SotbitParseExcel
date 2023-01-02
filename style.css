@@ -38,7 +38,7 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
-.btn-parse {
+#btn-parse {
     margin: 10px 20px;
     align-items: center;
     background-color: #fff;
@@ -61,6 +61,6 @@ input::-webkit-inner-spin-button {
     cursor: pointer;
 }
 
-.btn-parse:hover {
+#btn-parse:hover {
     box-shadow: #121212 0 0 0 3px, transparent 0 0 0 0;
 }
