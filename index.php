@@ -8,77 +8,8 @@
     <link rel="stylesheet" href="style.css">
     <title>Sotbit | ParseExcel</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript">
-      let dataExcel = [];
-      let headerTable = '';
-      window.onload = function () {
-        $.ajax({
-          type: 'POST',
-          url: 'core/parseExcel.php',
-          success: function (result) {
-            dataExcel = JSON.parse(result);
-            document.getElementById('btn-parse').style.display = '';
-            headerTable = dataExcel.shift().join('');
-            $.ajax({
-              type: 'POST',
-              url: 'core/handlerFilterData.php',
-              data: {
-                'filter': [''],
-                'data': dataExcel
-              },
-              success: function (result) {
-                const dataParse = $.parseHTML(headerTable + result);
-                $("#resultParse").html(dataParse);
-              }
-            });
-          }
-        });
-      }
-    </script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $("#filterForm").submit((event) => {
-          event.preventDefault();
-          if (Number(document.getElementById('price_from').value) > Number(document.getElementById('price_before').value) &&
-                  document.getElementById('price_before').value !== '') {
-            const priceFrom = document.getElementById('price_from').value;
-            document.getElementById('price_from').value = document.getElementById('price_before').value;
-            document.getElementById('price_before').value = priceFrom;
-          }
-          if (Number(document.getElementById('article_from').value) > Number(document.getElementById('article_before').value) &&
-                  document.getElementById('article_before').value !== '') {
-            const articleFrom = document.getElementById('article_from').value;
-            document.getElementById('article_from').value = document.getElementById('article_before').value;
-            document.getElementById('article_before').value = articleFrom;
-          }
-          const filterData = {
-            'article': {
-              'start': document.getElementById('article_from').value,
-              'end': document.getElementById('article_before').value
-            },
-            'price': {
-              'start': document.getElementById('price_from').value,
-              'end': document.getElementById('price_before').value
-            },
-            'name': document.getElementById('name').value,
-            'countRow': document.getElementById('countRow').value,
-          }
-          $.ajax({
-            type: 'POST',
-            url: 'core/handlerFilterData.php',
-            data: {
-              'filter': filterData,
-              'data': dataExcel
-            },
-            success: function (result) {
-              const html = $.parseHTML(headerTable + result);
-              $("#resultParse").html(html);
-            }
-          });
-          return false;
-        });
-      });
-    </script>
+    <script type="module" src="scripts/handlerSubmitForm.js"></script>
+    <script type="module" src="services/exceptionFilter.service.js"></script>
   </head>
   <body>
     <form id="filterForm">
@@ -109,10 +40,9 @@
       </label>
       <button type="submit" id="btn-parse" style="display:none">Parse Excel</button>
     </form>
+    <div id="error_alert"></div>
     <div>
-      <table border="1" id="resultParse">
-
-      </table>
+      <table border="1" id="resultParse"></table>
     </div>
   </body>
 </html>
