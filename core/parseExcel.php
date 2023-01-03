@@ -29,7 +29,7 @@ class ParseExcelService
     {
         $associationArray = [];
         foreach($data as $array) {
-            if($array[0] == 'Артикул') {
+            if($array == $data[0]) {
                 $associationArray[] = ['<tr><td>' . $array[0] . '</td>',
                     '<td>' . $array[1] . '</td>',
                     '<td>' . $array[2] . '</td>',

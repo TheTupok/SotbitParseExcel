@@ -12,11 +12,14 @@ class FilterData
 
         if($params) {
             foreach($params as $key => $value) {
-                if($key == 'price') {
+                if($key == 'price' || ($key == 'article' && $params['articleType'] == 'number')) {
                     $data = $filterDataService->filterRangeData($data, $value, $key);
                 }
                 if($key == 'name') {
                     $data = $filterDataService->filterContainsData($data, $value, $key);
+                }
+                if($key == 'article' && $params['articleType'] == 'mixed') {
+                    $data = $filterDataService->filterRangeMixedArticle($data, $value);
                 }
             }
         }
@@ -33,9 +36,9 @@ class FilterData
         foreach($data as $row) {
             $htmlTable .= '<tr>';
             foreach($row as $col) {
-//                if($col == $row['articleType']) {
-//                    continue;
-//                }
+                if($col == $row['articleType']) {
+                    continue;
+                }
                 $htmlTable .= '<td>' . $col . '</td>';
             }
             $htmlTable .= '</tr>';
