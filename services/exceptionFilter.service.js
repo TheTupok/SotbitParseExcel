@@ -18,8 +18,11 @@ export class ExceptionFilterService {
                 document.getElementById('article_before').value = articleStart;
             }
             return {articleType: 'number'};
-        } else if (!this.containsOnlyNumbers(articleStart) && !this.containsOnlyNumbers(articleEnd) &&
-            articleStart.length === articleEnd.length) {
+        } else if (
+            !this.containsOnlyNumbers(articleStart) && !this.containsOnlyNumbers(articleEnd) &&
+            articleStart.length === articleEnd.length &&
+            (articleStart.replace(/[0-9]/g, '') === articleEnd.replace(/[0-9]/g, ''))
+        ) {
             return {articleType: 'mixed'};
         } else {
             document.getElementById('article_from').value = '';
