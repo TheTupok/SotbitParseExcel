@@ -23,7 +23,7 @@
               type: 'POST',
               url: 'core/handlerFilterData.php',
               data: {
-                'filter': [],
+                'filter': [''],
                 'data': dataExcel
               },
               success: function (result) {

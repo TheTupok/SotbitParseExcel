@@ -19,11 +19,13 @@ class ParseExcelService
         $spreadsheet = $reader->load($fileName);
         $reader->setReadDataOnly(true);
 
+        $spreadsheet->getActiveSheet()->getStyle('C')->getNumberFormat()->setFormatCode('#');
+
         $data = $spreadsheet->getActiveSheet()->toArray();
         return $this->convertToAssociationArray($data);
     }
 
-    public function convertToAssociationArray($data): array
+    private function convertToAssociationArray($data): array
     {
         $associationArray = [];
         foreach($data as $array) {
@@ -36,8 +38,17 @@ class ParseExcelService
             } else if(!$array[0]) {
                 continue;
             }
-            $associationArray[] = array_combine(['article', 'name', 'price', 'remainder'],
-                [$array[0], $array[1], $array[2], $array[3]]);
+
+            if(ctype_digit($array[0])) {
+                $array[4] = 'number';
+            } else if(count(explode('-', $array[0])) == 2 && ctype_digit(explode('-', $array[0])[0])) {
+                $array[4] = 'number';
+            } else {
+                $array[4] = 'mixed';
+            }
+
+            $associationArray[] = array_combine(['article', 'name', 'price', 'remainder', 'articleType'],
+                array_slice($array, 0, 5));
         }
 
         return $associationArray;

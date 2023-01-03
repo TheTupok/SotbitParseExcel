@@ -20,7 +20,7 @@ class FilterData
                 }
             }
         }
-        if($params['countRow']) {
+        if(!empty($params['countRow'])) {
             $data = array_slice($data, 0, (int)$params['countRow']);
         }
 
@@ -33,6 +33,9 @@ class FilterData
         foreach($data as $row) {
             $htmlTable .= '<tr>';
             foreach($row as $col) {
+//                if($col == $row['articleType']) {
+//                    continue;
+//                }
                 $htmlTable .= '<td>' . $col . '</td>';
             }
             $htmlTable .= '</tr>';
